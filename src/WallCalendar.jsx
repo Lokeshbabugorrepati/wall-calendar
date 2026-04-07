@@ -18,6 +18,10 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 
+// Evaluated once at module load — drives all mobile inline-style overrides.
+// No CSS cascade or !important issues. Covers both portrait phones and narrow tablets.
+const mobile = typeof window !== 'undefined' && window.innerWidth < 768
+
 // ─── Constants ──────────────────────────────────────────────────
 
 const MONTH_NAMES = [
@@ -345,7 +349,7 @@ function DayCell({
     <div
       className="relative flex items-center justify-center select-none day-cell"
       style={{
-        minHeight: 44,
+        minHeight: mobile ? 36 : 44,
         cursor: 'pointer',
         background: (isInRange || isPreview) && !isStart && !isEnd
           ? cellStyle.bg
@@ -372,13 +376,13 @@ function DayCell({
       <div
         className="day-number-pill relative flex items-center justify-center transition-all duration-150"
         style={{
-          width: 36,
-          height: 36,
+          width:      mobile ? 30 : 36,
+          height:     mobile ? 30 : 36,
           background: cellStyle.bg,
           borderRadius: cellStyle.borderRadius,
-          color: cellStyle.color,
+          color:      cellStyle.color,
           fontWeight: cellStyle.fontWeight,
-          fontSize: '0.88rem',
+          fontSize:   mobile ? '0.75rem' : '0.88rem',
           zIndex: 1,
         }}
         onMouseEnter={() => hasNote && setShowTip(true)}
@@ -448,6 +452,9 @@ function SeasonInfoCard({ month, year, theme, rangeStart, rangeEnd, todayDate })
         background: '#ffffff',
         flex: 1,
         minHeight: 0,
+        // Fix 1 – push all left-panel text away from the card edge on mobile
+        paddingLeft: mobile ? 16 : 0,
+        boxSizing: 'border-box',
       }}
     >
       {/* Season gradient header */}
@@ -1088,8 +1095,12 @@ export default function WallCalendar() {
               {/* Calendar grid with flip animation */}
               <div
                 key={flipKey}
-                className="calendar-grid-wrapper calendar-flip-enter px-3 py-2"
-                style={{ background: '#ffffff' }}
+                className="calendar-grid-wrapper calendar-flip-enter"
+                style={{
+                  background: '#ffffff',
+                  // Fix 2 – zero horizontal padding on mobile so all 7 cols fit
+                  padding: mobile ? '8px 2px' : '8px 12px',
+                }}
               >
                 {/* Day-of-week headers */}
                 <div className="grid grid-cols-7 mb-1">
@@ -1098,9 +1109,9 @@ export default function WallCalendar() {
                       key={d}
                       className="calendar-day-header flex items-center justify-center py-1"
                       style={{
-                        fontSize: '0.68rem',
+                        fontSize:      mobile ? '0.58rem' : '0.68rem',
                         fontWeight: 700,
-                        letterSpacing: '0.08em',
+                        letterSpacing: mobile ? 0 : '0.08em',
                         color: (i === 0 || i === 6) ? '#cbd5e1' : '#94a3b8',
                         textTransform: 'uppercase',
                       }}
@@ -1117,7 +1128,7 @@ export default function WallCalendar() {
                 >
                   {calendarDays.map((day, idx) => {
                     if (!day) {
-                      return <div key={`empty-${idx}`} style={{ minHeight: 44 }} />
+                      return <div key={`empty-${idx}`} style={{ minHeight: mobile ? 36 : 44 }} />
                     }
 
                     const dayDate = new Date(viewYear, viewMonth, day)
