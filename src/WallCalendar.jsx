@@ -370,7 +370,7 @@ function DayCell({
 
       {/* Day number pill */}
       <div
-        className="relative flex items-center justify-center transition-all duration-150"
+        className="day-number-pill relative flex items-center justify-center transition-all duration-150"
         style={{
           width: 36,
           height: 36,
@@ -452,6 +452,7 @@ function SeasonInfoCard({ month, year, theme, rangeStart, rangeEnd, todayDate })
     >
       {/* Season gradient header */}
       <div
+        className="season-panel-section"
         style={{
           background: theme.gradient,
           padding: '18px 20px 14px',
@@ -534,7 +535,7 @@ function SeasonInfoCard({ month, year, theme, rangeStart, rangeEnd, todayDate })
       )}
 
       {/* Holidays this month */}
-      <div style={{ padding: '14px 16px', flex: 1 }}>
+      <div className="season-panel-section" style={{ padding: '14px 16px', flex: 1 }}>
         <p
           style={{
             fontFamily: "'Inter', sans-serif",
@@ -953,8 +954,9 @@ export default function WallCalendar() {
       className="flex items-center justify-center p-4 md:p-8"
       style={{ minHeight: '100vh' }}
     >
-      {/* Keyboard hint */}
+      {/* Keyboard hint — hidden on mobile via .keyboard-hint CSS rule */}
       <div
+        className="keyboard-hint"
         style={{
           position: 'fixed',
           bottom: 16,
@@ -1027,7 +1029,7 @@ export default function WallCalendar() {
 
               {/* Month nav bar */}
               <div
-                className="flex items-center justify-between px-4 py-3"
+                className="calendar-nav-bar flex items-center justify-between px-4 py-3"
                 style={{
                   borderBottom: '1px solid #f1f5f9',
                   background: '#ffffff',
@@ -1086,7 +1088,7 @@ export default function WallCalendar() {
               {/* Calendar grid with flip animation */}
               <div
                 key={flipKey}
-                className="calendar-flip-enter px-3 py-2"
+                className="calendar-grid-wrapper calendar-flip-enter px-3 py-2"
                 style={{ background: '#ffffff' }}
               >
                 {/* Day-of-week headers */}
@@ -1094,7 +1096,7 @@ export default function WallCalendar() {
                   {DAY_LABELS.map((d, i) => (
                     <div
                       key={d}
-                      className="flex items-center justify-center py-1"
+                      className="calendar-day-header flex items-center justify-center py-1"
                       style={{
                         fontSize: '0.68rem',
                         fontWeight: 700,

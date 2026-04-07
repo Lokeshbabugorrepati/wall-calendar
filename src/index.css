@@ -132,3 +132,75 @@ textarea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 6px; }
+
+/* ════════════════════════════════════════════════════
+   MOBILE FIXES  (max-width: 767px)
+   Three issues, three targeted rule-sets.
+   Desktop layout is completely untouched.
+   ════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+  /* ── Fix 1: SUN column cut off ──────────────────────
+     Reduce horizontal padding on the grid wrapper and
+     shrink day cells + header labels so all 7 columns
+     fit within the phone viewport without overflow.     */
+
+  .calendar-grid-wrapper {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .calendar-day-header {
+    font-size: 0.58rem !important;
+    letter-spacing: 0 !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  /* day-cell: the outer row (handles range background) */
+  .day-cell {
+    min-height: 36px !important;
+  }
+
+  /* day-number-pill: the inner circle / number element */
+  .day-number-pill {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* empty placeholder cells */
+  .grid.grid-cols-7 > div[style*="minHeight: 44"] {
+    min-height: 36px !important;
+  }
+
+
+  /* ── Fix 2: Left panel text clipped on the left edge ─
+     The season gradient and holidays sections start at
+     x=0 inside the card.  Add safe left padding so text
+     is never hidden behind the card's rounded corner or
+     the drop-shadow clip region.                       */
+
+  .season-panel-section {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+
+  /* ── Fix 3: ‹ arrow not visible on mobile ────────────
+     Tighten the nav bar's horizontal padding so both the
+     40×40 buttons always have room. Also hide the
+     keyboard hint bar on touch devices (no keyboard).  */
+
+  .calendar-nav-bar {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    gap: 4px !important;
+  }
+
+  /* Hide keyboard shortcut hint on mobile – irrelevant on touch */
+  .keyboard-hint {
+    display: none !important;
+  }
+}
+
